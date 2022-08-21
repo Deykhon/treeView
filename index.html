@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+</head>
+
+<body>
+    <h1>Hello, world!</h1>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Todo lo neesario para el tree view -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+        integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+
+    <a href="myfile.html" id='tagId'>Old File </a>
+    <script>
+            //document.getElementById("tagId").innerText="new File";
+            //document.getElementById("tagId").textContent="new archivo";
+            //$("#tagId").html("new File"); //usando jquery
+            //$("#tagid").attr("href","new value");
+    </script>
+
+    <button type="button" id="collapser">colapsar</button>
+
+    <div class="row">
+        <div class="col-md-6">
+            <ul id="tree1" style="cursor: pointer;">
+                </p>
+                <li id="1">ACTIVO
+                    <ul>
+                        <li id="1.1">ACTIVO CORRIENTE
+                            <ul>
+                                <li id="1.1.1">DISPONIBLE
+
+                                    <ul>
+                                        <li>Report1 con espacio</li>
+                                        <li>Report2</li>
+                                        <li>Report3</li>
+                                    </ul>
+                                </li>
+                                <li>Employee Maint.</li>
+                            </ul>
+                        </li>
+                        <li>DISPONIBLE
+
+
+                        </li>
+                        <li>Human Resources</li>
+                    </ul>
+                </li>
+                <li id="dos">PASIVO
+                    <ul>
+                        <li>Company Maintenance</li>
+                        <li>
+                            Employees
+                            <ul>
+                                <li>
+                                    Reports
+                                    <ul>
+                                        <li>Report1</li>
+                                        <li>Report2</li>
+                                        <li>Report3</li>
+                                    </ul>
+                                </li>
+                                <li>Employee Maint.</li>
+                            </ul>
+                        </li>
+                        <li>Human Resources</li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+
+        <script>
+            console.log("Hola");
+            $.fn.extend({
+                treed: function (o) {
+
+                    var openedClass = 'fa-minus-circle';
+                    var closedClass = 'fa-plus-circle';
+
+                    if (typeof o != 'undefined') {
+                        if (typeof o.openedClass != 'undefined') {
+                            openedClass = o.openedClass;
+
+                        }
+                        if (typeof o.closedClass != 'undefined') {
+                            closedClass = o.closedClass;
+
+                        }
+                    };
+
+                    //initialize each of the top levels
+                    var tree = $(this);
+                    tree.addClass("tree");
+
+                    tree.find('li').has("ul").each(function () {
+                        var branch = $(this); //li with children ul
+
+                        branch.prepend("<i class='indicator fas " + closedClass + "'></i>");
+                        branch.addClass('branch');
+                        branch.on('click', function (e) {
+                            if (this == e.target) {
+                                var icon = $(this).children('i:first');
+                                icon.toggleClass(openedClass + " " + closedClass);
+                                $(this).children().children().toggle();
+                            }
+                        })
+                        branch.children().children().toggle();
+
+                    });
+
+                    //fire event from the dynamically added icon
+                    tree.find('.branch .indicator').each(function () {
+                        $(this).on('click', function () {
+                            $(this).closest('li').click();
+
+                        });
+                    });
+                    //fire event to open branch if the li contains an anchor instead of text
+                    tree.find('.branch>a').each(function () {
+                        $(this).on('click', function (e) {
+                            $(this).closest('li').click();
+                            e.preventDefault();
+                        });
+                    });
+                    //fire event to open branch if the li contains a button instead of text
+                    tree.find('.branch>button').each(function () {
+                        $(this).on('click', function (e) {
+                            $(this).closest('li').click();
+                            e.preventDefault();
+                        });
+                    });
+                }
+            });
+
+            //Initialization of treeviews
+
+            $('#tree1').treed();
+
+
+            //$('#tree2').treed({ openedClass: 'fa-folder-open', closedClass: 'fa-folder' });
+
+        </script>
+        <script>
+
+
+            console.log('valor del texto segun id ' + document.getElementById('1').innerText);
+            var ul = document.getElementById('tree1');  // Parent
+
+            ul.addEventListener('click', function (e) {
+                if (e.target.tagName === 'LI') {
+
+                    console.log('solo target ' + e.target);
+                    console.log('id del elemento ' + e.target.id);  // Check if the element is a LI
+
+
+                }
+            });
+            // CREAR LISTA
+            
+        </script>
+
+        <style>
+            .tree,
+            .tree ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                margin-left: 10px;
+
+            }
+
+            .tree ul {
+                margin-left: 1em;
+                position: relative;
+
+            }
+
+            .tree ul ul {
+                margin-left: .5em;
+
+            }
+
+            .tree ul:before {
+                content: "";
+                display: block;
+                width: 0;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                border-left: 1px solid;
+
+            }
+
+            .tree li {
+                margin: 0;
+                padding: 0 1em;
+                line-height: 2em;
+                color: #369;
+                font-weight: 600;
+                position: relative;
+
+            }
+
+            .tree ul li:before {
+                content: "";
+                display: block;
+                width: 10px;
+                height: 0;
+                border-top: 1px solid;
+                margin-top: -1px;
+                position: absolute;
+                top: 1em;
+                left: 0;
+
+            }
+
+            .tree ul li:last-child:before {
+                background: #fff;
+                height: auto;
+                top: 1em;
+                bottom: 0
+            }
+
+            .indicator {
+                margin-right: 5px;
+            }
+
+            .tree li a {
+                text-decoration: none;
+                color: #369;
+
+            }
+
+            .tree li button,
+            .tree li button:active,
+            .tree li button:focus {
+                text-decoration: none;
+                color: #369;
+                border: none;
+                background: transparent;
+                margin: 0px 0px 0px 0px;
+                padding: 0px 0px 0px 0px;
+                outline: 0;
+
+            }
+
+            /* modificado*/
+            .blue-input:focus {
+                background: rgb(2, 154, 255);
+                color: rgb(255, 255, 255);
+            }
+
+            .onhoverColor {
+                background-color: '#F5F5F5';
+            }
+
+            /*
+        ul:hover {
+            background: blue;
+        }
+
+        li:hover {
+            background: red;
+        }
+
+        li:hover a {
+            color: green;
+        }
+        */
+        </style>
+
+</body>
+
+</html>
